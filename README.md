@@ -1,0 +1,2 @@
+# koch_curve
+wasm
