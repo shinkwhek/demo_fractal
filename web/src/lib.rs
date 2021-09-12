@@ -4,7 +4,7 @@ use js_sys::Float64Array;
 use wasm_bindgen::prelude::*;
 
 mod dragon;
-mod logic;
+mod koch;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -20,7 +20,7 @@ extern "C" {
 
 #[wasm_bindgen]
 pub fn generate_koch_curve_pathes(width: f64, height: f64, max_iter: usize) -> Vec<Float64Array> {
-    let mut pathes = logic::Points::new(width, height);
+    let mut pathes = koch::Points::new(width, height);
 
     let pathes = pathes.generate(max_iter);
     pathes
@@ -30,7 +30,6 @@ pub fn generate_koch_curve_pathes(width: f64, height: f64, max_iter: usize) -> V
             let float_array = Float64Array::new_with_length(2);
             float_array.copy_from(&[v.x, v.y]);
 
-            let forlog = format!("{:?}", float_array.to_vec());
             float_array
         })
         .collect::<Vec<_>>()
@@ -48,7 +47,6 @@ pub fn generate_dragon_pathes(width: f64, height: f64, max_iter: usize) -> Vec<F
             let float_array = Float64Array::new_with_length(2);
             float_array.copy_from(&[v.x, v.y]);
 
-            let forlog = format!("{:?}", float_array.to_vec());
             float_array
         })
         .collect::<Vec<_>>()

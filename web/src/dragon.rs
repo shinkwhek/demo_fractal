@@ -1,7 +1,6 @@
 use std::f64::consts::PI;
 use std::ops::{Add, Sub};
-use std::process::Output;
-use std::{borrow::Borrow, vec};
+use std::vec;
 
 use wasm_bindgen::prelude::*;
 #[wasm_bindgen]
@@ -67,16 +66,13 @@ impl Points {
 
     fn get_pair_vec(a: &Vec<Point>) -> Vec<Vec<Point>> {
         let mut result = vec![];
-        let mut body = a;
+        let body = a;
 
         for i in 0..(body.len() - 1) {
             let (a, b) = (body[i], body[i + 1]);
             result.push(vec![a, b]);
         }
 
-        unsafe {
-            log(&format!("debug: {:?}", result));
-        }
         result
     }
 
