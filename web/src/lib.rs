@@ -1,6 +1,10 @@
 mod utils;
 
+use js_sys::Float64Array;
 use wasm_bindgen::prelude::*;
+
+mod dragon;
+mod logic;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -9,11 +13,43 @@ use wasm_bindgen::prelude::*;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern {
-    fn alert(s: &str);
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(a: &str);
 }
 
 #[wasm_bindgen]
-pub fn greet() {
-    alert("Hello, web!");
+pub fn generate_koch_curve_pathes(width: f64, height: f64, max_iter: usize) -> Vec<Float64Array> {
+    let mut pathes = logic::Points::new(width, height);
+
+    let pathes = pathes.generate(max_iter);
+    pathes
+        .body
+        .into_iter()
+        .map(|v| {
+            let float_array = Float64Array::new_with_length(2);
+            float_array.copy_from(&[v.x, v.y]);
+
+            let forlog = format!("{:?}", float_array.to_vec());
+            float_array
+        })
+        .collect::<Vec<_>>()
+}
+
+#[wasm_bindgen]
+pub fn generate_dragon_pathes(width: f64, height: f64, max_iter: usize) -> Vec<Float64Array> {
+    let mut pathes = dragon::Points::new(width, height);
+
+    let pathes = pathes.generate(max_iter);
+    pathes
+        .body
+        .into_iter()
+        .map(|v| {
+            let float_array = Float64Array::new_with_length(2);
+            float_array.copy_from(&[v.x, v.y]);
+
+            let forlog = format!("{:?}", float_array.to_vec());
+            float_array
+        })
+        .collect::<Vec<_>>()
 }
