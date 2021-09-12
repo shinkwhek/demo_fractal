@@ -1,2 +1,2 @@
-# koch_curve
+# demo_fractal
 wasm
